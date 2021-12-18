@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.core.numeric import outer
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import pandas as pd
 import random
 import re
@@ -405,6 +406,23 @@ def prepare_data(data, training_data):
     pd.options.mode.chained_assignment = None
     for var in targets:
         data_copy[var[0]] = data_copy[var[0]].apply(var[1])
-    pd.options.mode.chained_assignment = 'warn'
 
+    # Perform feature normalization:
+    minmax = MinMaxScaler()
+    standardizator = StandardScaler()
+    features_to_norm = {
+        ('zip_code', minmax), ('household_income', minmax), ('num_of_siblings', minmax),
+        ('sugar_levels', standardizator), ('PCR_01', standardizator), ('PCR_02', standardizator), 
+        ('PCR_03', standardizator), ('PCR_05', standardizator), ('PCR_06', standardizator), 
+        ('PCR_07', standardizator), ('PCR_10', standardizator)
+    }
+
+    for feature in features_to_norm:
+        col_data = np.array(data_copy[feature[0]]).reshape(-1,1)
+        col_train = np.array(train_copy[feature[0]]).reshape(-1,1)
+        feature[1].fit(col_train)
+        data_copy[feature[0]] = feature[1].transform(col_data)
+        train_copy[feature[0]] = feature[1].transform(col_train)
+    
+    pd.options.mode.chained_assignment = 'warn'
     return data_copy
