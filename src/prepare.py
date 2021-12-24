@@ -370,8 +370,9 @@ def prepare_data(data, training_data):
                     clean_data (pandas.DataFrame): A *copy* of data after it has been cleaned relatively to the provided training_data.
     '''
     # Define the targets:
-    targets = [('risk', lambda x: 1 if x == 'High' else -1), ('spread',
-                                                              lambda x: 1 if x == 'High' else -1), ('covid', lambda x: 1 if x == True else -1)]
+    targets = [('risk', lambda x: 1 if x == 'High' else -1),
+               ('spread', lambda x: 1 if x == 'High' else -1),
+               ('covid', lambda x: 1 if x == True else -1)]
     # Copy the input dataframes:
     data_copy = data.copy()
     train_copy = training_data.copy()
@@ -411,18 +412,21 @@ def prepare_data(data, training_data):
     minmax = MinMaxScaler()
     standardizator = StandardScaler()
     features_to_norm = {
-        ('zip_code', minmax), ('household_income', minmax), ('num_of_siblings', minmax),
-        ('sugar_levels', standardizator), ('PCR_01', standardizator), ('PCR_02', standardizator), 
-        ('PCR_03', standardizator), ('PCR_05', standardizator), ('PCR_06', standardizator), 
+        ('zip_code', minmax), ('household_income',
+                               minmax), ('num_of_siblings', minmax),
+        ('sugar_levels', standardizator), ('PCR_01',
+                                           standardizator), ('PCR_02', standardizator),
+        ('PCR_03', standardizator), ('PCR_05',
+                                     standardizator), ('PCR_06', standardizator),
         ('PCR_07', standardizator), ('PCR_10', standardizator)
     }
 
     for feature in features_to_norm:
-        col_data = np.array(data_copy[feature[0]]).reshape(-1,1)
-        col_train = np.array(train_copy[feature[0]]).reshape(-1,1)
+        col_data = np.array(data_copy[feature[0]]).reshape(-1, 1)
+        col_train = np.array(train_copy[feature[0]]).reshape(-1, 1)
         feature[1].fit(col_train)
         data_copy[feature[0]] = feature[1].transform(col_data)
         train_copy[feature[0]] = feature[1].transform(col_train)
-    
+
     pd.options.mode.chained_assignment = 'warn'
     return data_copy
