@@ -1,3 +1,4 @@
+from typing import Optional
 from sklearn.base import BaseEstimator, ClassifierMixin
 from scipy.spatial import distance
 # from statistics import mode
@@ -9,9 +10,11 @@ class kNN(BaseEstimator, ClassifierMixin):
     def __init__(self, n_neighbors: int = 5):
         self.n_neighbors = n_neighbors
 
-    def fit(self, X, y):
+    def fit(self, X, y, k: Optional[int]=None):
         self.train_x = X
         self.train_y = y
+        if k is not None:
+            self.n_neighbors = k
         return self
 
     def predict(self, target_x):
