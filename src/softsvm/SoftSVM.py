@@ -84,9 +84,9 @@ class SoftSVM(BaseEstimator, ClassifierMixin):
         partial_b_inputs = cacl_partial_b_inputs()
         g_b = sum(partial_b_inputs)
 
-        #    [a, b, c]     *   [[    x1     ],
-        #        ^              [    x2     ],  =  a*x1 + b*x2 + c*x3
-        #  partial_b_inputs     [    x3     ]]
+        #    [a, b, c]     *    [[    x1     ],
+        #        ^               [    x2     ],  =  a*x1 + b*x2 + c*x3
+        #  partial_b_inputs      [    x3     ]]
         X_part = partial_b_inputs.dot(X)
         g_w = 2*w + X_part
         return g_w, g_b
