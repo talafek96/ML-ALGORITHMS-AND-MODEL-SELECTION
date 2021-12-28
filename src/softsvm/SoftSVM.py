@@ -50,7 +50,7 @@ class SoftSVM(BaseEstimator, ClassifierMixin):
         norm = np.linalg.norm(w)
 
         hinge_loss = sum(list(map(lambda x: x if x > 0 else 0,
-                         (1 - hinge_inputs).reshape(1, -1)[0])))
+                                  (1 - hinge_inputs).reshape(1, -1)[0])))
         loss = norm*norm + C*hinge_loss
         return loss
 

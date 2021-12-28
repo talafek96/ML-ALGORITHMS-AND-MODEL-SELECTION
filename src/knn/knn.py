@@ -21,6 +21,6 @@ class kNN(BaseEstimator, ClassifierMixin):
         # Note: You can use self.n_neighbors here
         dist_mat = distance.cdist(target_x, self.train_x, 'euclidean')
         ind = np.argpartition(dist_mat, self.n_neighbors, axis=1)
-        predictions = mode(self.train_y[ind][:, :self.n_neighbors], axis=1)[
-            0].flatten()
+        predictions = mode(self.train_y[ind][:, :self.n_neighbors],
+                           axis=1)[0].flatten()
         return predictions
